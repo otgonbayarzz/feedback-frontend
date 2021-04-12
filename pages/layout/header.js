@@ -17,17 +17,17 @@ const Header = (props) => {
   return (
     <>
       <Navbar bg="light" expand="lg">
-        <Navbar.Brand href="#home">Feedback</Navbar.Brand>
+        <Navbar.Brand href="#home">Мэдээллийн сан</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
-            <Nav.Link href="#link">Users</Nav.Link>
-            <Nav.Link href="#home">Companies</Nav.Link>
-            <Nav.Link href="#link">Prospects</Nav.Link>
-            <Nav.Link href="#link">Contract</Nav.Link>
+            <Nav.Link href="#link">Хэрэглэгч</Nav.Link>
+            <Nav.Link href="#home">Салбарууд</Nav.Link>
+            <Nav.Link href="#link">Тоо Баримт</Nav.Link>
+            
           </Nav>
           <Form inline>
-            <Button variant="outline-success">Logout</Button>
+            <Button variant="outline-success">Гарах</Button>
           </Form>
         </Navbar.Collapse>
       </Navbar>

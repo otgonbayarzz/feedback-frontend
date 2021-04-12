@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const api_url = "http://localhost:3001";
+const api_url = process.env.api_url || "http://localhost:3001";
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -47,7 +47,7 @@ export default class ApiService {
   }
 
   async getCompany() {
-    const url = `${api_url}/api/company`;
+    const url = `${api_url}/api/payment`;
     let res = await axios
       .create({
         timeout: 40000,
@@ -60,7 +60,7 @@ export default class ApiService {
       .catch(function (error) {
         console.log(error);
       });
-      
+
 
     return res.data;
   }
