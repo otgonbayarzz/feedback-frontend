@@ -15,16 +15,9 @@ import { ToastContainer, toast } from "react-toastify";
 import ApiService from "../utils/api";
 import Header from "./layout/header";
 import React from "react";
-import BootstrapTable from 'react-bootstrap-table-next';
-import filterFactory, { textFilter, Comparator, selectFilter, multiSelectFilter } from 'react-bootstrap-table2-filter';
-import ToolkitProvider, { CSVExport } from 'react-bootstrap-table2-toolkit';
 import qee from "qf-export-excel"
 import moment from 'moment'
-import { ConnectContactLens } from "aws-sdk";
-
-
-
-
+import * as Icon from 'react-bootstrap-icons';
 
 const apiService = new ApiService();
 
@@ -39,62 +32,6 @@ export default function home(props) {
   const [sProduct, setSproduct] = useState("");
   const [sDate, setSdate] = useState("");
   const [constValue, setConstvalue] = useState([]);
-
-  // const ExcelFile = ReactExport.ExcelFile;
-  // const ExcelSheet = ReactExport.ExcelFile.ExcelSheet;
-  // const ExcelColumn = ReactExport.ExcelFile.ExcelColumn;
-
-  const columns = [
-    {
-      dataField: 'Index',
-      text: '№',
-    },
-    {
-      dataField: 'SaleNo',
-      text: 'Гүйлгээний дугаар',
-    }, {
-      dataField: 'StationName',
-      text: 'Салбарын нэр',
-      filter: textFilter({
-        onFilter: filterVal => {
-          companys.filter((i) => i.StationName === filterVal)
-        }
-      })
-    },
-    {
-      dataField: 'ItemName',
-      text: 'Бүтээгдэхүүн'
-
-    },
-    {
-      dataField: 'Quantity',
-      text: 'Тоо Хэмжээ'
-    },
-    {
-      dataField: 'CardAmount',
-      text: 'Картаар төлсөн ',
-      filter: textFilter({
-        onFilter: filterVal => {
-          companys.filter(i => i.CardAmount === filterVal)
-        }
-      })
-    },
-    {
-      dataField: 'CashAmount',
-      text: 'Бэлнээр төлсөн',
-      filter: textFilter({
-        onFilter: filterVal => {
-          companys.filter(i => i.CashAmount === filterVal)
-        }
-      })
-    },
-
-    {
-      dataField: 'SaleDate',
-      text: 'Гүйлгээний хугацаа'
-    }
-  ];
-
 
   let titleList = [{
     key: 'Index',
@@ -164,14 +101,8 @@ export default function home(props) {
       setConstvalue(tmp);
       let tmp1 = [...new Set(tmp.map(i => i.ItemName))];
       let tmp2 = [...new Set(tmp.map(i => i.StationName))];
-
       setProducts(tmp1);
       setBranch(tmp2);
-
-
-
-
-    } else {
     }
   };
   const changePage = async (number) => {
@@ -263,53 +194,78 @@ export default function home(props) {
                 </>
               )}
             </Col>
-            <Row>
-              <Col xs={12} md={3} style={{ marginTop: "26px", float: "right" }}>
-                <Form.Control as="select" value={sBranch} onChange={e => {
-                  filteData("branch", e.target.value)
-                }}
-                >
-                  <option value="0"> Салбар сонгох  </option>
-                  {branch &&
-                    branch.map((item, index) => (
-                      <>
-                        <option value={item}> {item} </option>
-                      </>
+
+            <Col xs={12} md={3} style={{ marginTop: "26px", float: "right" }}>
+              <Form.Control as="select" value={sBranch} onChange={e => {
+                filteData("branch", e.target.value)
+              }}
+              >
+                <option value="0"> Салбар сонгох  </option>
+                {branch &&
+                  branch.map((item, index) => (
+                    <>
+                      <option value={item}> {item} </option>
+                    </>
+                  ))}
+              </Form.Control>
+            </Col>
+            <Col xs={12} md={2} style={{ marginTop: "26px", float: "right" }}>
+              <Form.Control as="select"
+                onChange={e => {
+                  filteData("product", e.target.value)
+                }} >
+                <option value="0"> Бүтээгдэхүүн сонгох  </option>
+                {products &&
+                  products.map((item, index) => (
+                    <>
+                      <option value={item}> {item} </option>
+                    </>
+                  ))}
+              </Form.Control>
+            </Col>
+            <Col xs={12} md={2} style={{ marginTop: "26px", float: "right" }}>
+              <Form.Control value={sDate} placeholder="Өдөр сонгох" style={{ borderRadius: "16px" }} type="date"
+                onChange={e => {
+                  filteData("date", e.target.value)
+                }} />
+            </Col>
+            <Col xs={12} md={2} style={{ marginTop: "26px", float: "right" }}>
+              <Button variant="secondary" onClick={clearData}  > Цэвэрлэх </Button>
+            </Col>
+            <Col xs={12} md={2} style={{ marginTop: "26px", float: "right" }}>
+              <Button onClick={expo} > <Icon.FileEarmarkExcel />{'  '}Татах</Button>
+            </Col>
+
+            <Col xs={12} style={{ marginTop: "26px" }}>
+
+              <Table striped bordered hover size="md">
+                <thead>
+                  <tr>
+                    <th style={{ textAlign: "center" }}>№</th>
+                    <th style={{ textAlign: "center" }}>Гүйлгээний дугаар</th>
+                    <th style={{ textAlign: "center" }}>Салбарын нэр</th>
+                    <th style={{ textAlign: "center" }}>Тоо Хэмжээ</th>
+                    <th style={{ textAlign: "center" }}>Картаар төлсөн</th>
+                    <th style={{ textAlign: "center" }}>Бэлнээр төлсөн</th>
+                    <th style={{ textAlign: "center" }}>Гүйлгээний хугацаа</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {companys &&
+                    companys.map((item, index) => (
+                      <tr>
+                        <td style={{ textAlign: "center" }}>{index + 1}</td>
+                        <td style={{ textAlign: "center" }}>{item.SaleNo}</td>
+                        <td style={{ textAlign: "center" }}>{item.StationName}</td>
+                        <td style={{ textAlign: "center" }}>{item.Quantity}</td>
+                        <td style={{ textAlign: "center" }}>{item.CardAmount}</td>
+                        <td style={{ textAlign: "center" }}>{item.CashAmount}</td>
+                        <td style={{ textAlign: "center" }}>{item.SaleDate}</td>
+                      </tr>
                     ))}
-                </Form.Control>
-              </Col>
-              <Col xs={12} md={2} style={{ marginTop: "26px", float: "right" }}>
-                <Form.Control as="select"
-                  onChange={e => {
-                    filteData("product", e.target.value)
-                  }} >
-                  <option value="0"> Бүтээгдэхүүн сонгох  </option>
-                  {products &&
-                    products.map((item, index) => (
-                      <>
-                        <option value={item}> {item} </option>
-                      </>
-                    ))}
-                </Form.Control>
-              </Col>
-              <Col xs={12} md={2} style={{ marginTop: "26px", float: "right" }}>
-                <Form.Control value={sDate} placeholder="Өдөр сонгох" style={{ borderRadius: "16px" }} type="date"
-                  onChange={e => {
-                    filteData("date", e.target.value)
-                  }} />
-              </Col>
-              <Col xs={12} md={2} style={{ marginTop: "26px", float: "right" }}>
-                <Button onClick={clearData} > Clear filter </Button>
-              </Col>
-              <Col xs={12} md={2} style={{ marginTop: "26px", float: "right" }}>
-                <Button onClick={expo} > Export Excel </Button>
-              </Col>
-            </Row>
-            <Row>
-              <Col xs={12} style={{ marginTop: "26px" }}>
-                <BootstrapTable keyField='id' data={companys} columns={columns} filter={filterFactory()} />
-              </Col>
-            </Row>
+                </tbody>
+              </Table>
+            </Col>
           </Row>
 
           <style jsx>{`
