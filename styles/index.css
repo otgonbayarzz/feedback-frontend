@@ -1,0 +1,50 @@
+#react-paginate ul {
+    display: inline-block;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  
+  #react-paginate li {
+    display: inline-block;
+  }
+
+  .pagination__ {
+    justify-content: center;
+    display: flex;
+    
+  }
+  
+  ul {
+    list-style: none;
+  }
+ 
+  
+  ul.pagination__ li {
+    display: inline-block;
+    width: 30px;
+    border: 1px solid #e2e2e2;
+    display: flex;
+    justify-content: center;
+    font-size: 25px;
+    
+  }
+  
+  ul.pagination__ li a {
+    text-decoration: none;
+    color: #337ab7;
+    font-size: 20px;
+    
+  }
+  
+  ul.pagination__ li.active a {
+    color: white;
+  }
+  ul.pagination__ li.active {
+    background-color: #337ab7;
+  }
+  
+  ul.pagination__ li a:hover,
+  ul.pagination__ li a.active {
+    color: blue;
+  }
+

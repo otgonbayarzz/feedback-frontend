@@ -1,4 +1,5 @@
 import axios from "axios";
+import moment from 'moment'
 
 const api_url = process.env.api_url || "http://localhost:3001";
 
@@ -46,8 +47,30 @@ export default class ApiService {
     return res.data;
   }
 
-  async getCompany() {
-    const url = `${api_url}/api/payment`;
+  async getCompany(pageNumber, perPage, stationNo, itemName, startDate, endDate) {
+    let eDate = "";
+    let sDate = "";
+    if (startDate && startDate.length > 0) {
+      let tmp = new Date(startDate)
+      tmp.setHours(9);
+      tmp.setMinutes(0);
+      console.log(tmp);
+      sDate = moment(tmp).format("YYYY-MM-DD HH:mm");
+      console.log(sDate);
+    }
+    if (endDate && endDate.length > 0) {
+      let ttmp = new Date(endDate);
+      ttmp.setHours(8);
+      ttmp.setMinutes(59);
+      console.log(ttmp);
+      eDate = moment(ttmp).add(1, 'days').format("YYYY-MM-DD HH:mm");
+      console.log(eDate);
+
+
+
+    }
+    const url = `${api_url}/api/payment/?pageNumber=${pageNumber}&stationNo=${stationNo}&itemName=${itemName}&startDate=${sDate}&endDate=${eDate}`;
+    console.log(url);
     let res = await axios
       .create({
         timeout: 40000,
@@ -65,3 +88,4 @@ export default class ApiService {
     return res.data;
   }
 }
+
