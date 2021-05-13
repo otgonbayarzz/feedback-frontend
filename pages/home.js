@@ -133,21 +133,25 @@ export default function home(props) {
       let ta = tmpExport.map(i => {
         return parseFloat(i.CashAmount);
       })
-      let tmpInt = parseFloat("0");
-      for (let k = 0; k < ta.length; k += 1) {
-        tmpInt = tmpInt + ta[k];
-
-      }
-      setTotalAmount(tmpInt);
       let tv = tmpExport.map(i => {
         return parseFloat(i.Quantity);
       })
+      
+
+      let tmpInt = parseFloat("0");
       let tmpFloat = parseFloat("0");
+      for (let k = 0; k < ta.length; k += 1) {
+        tmpInt = tmpInt + ta[k];
+      }
+      
       for (let k = 0; k < tv.length; k += 1) {
         tmpFloat = tmpFloat + tv[k];
       }
+      console.log(tv.length, tmpFloat)
+      console.log(ta.length, tmpInt)
+      setTotalAmount(tmpInt);
       setTotalValue(tmpFloat)
-      console.log("total amount", tmpFloat)
+      
       let bbb = [];
       if (resp.cnt > 50 && resp.cnt < 100)
         bbb = [1, 2]
