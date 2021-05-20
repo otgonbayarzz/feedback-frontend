@@ -82,8 +82,9 @@ export default function home(props) {
 
   ]
 
-  const expo = () => {
-    qee(titleList, exportData, "Тайлан.xls")
+  const expo = async () => {
+    //qee(titleList, exportData, "Тайлан.xls")
+    await apiService.getFile(1, perPage, branch, sProduct, sDate, eDate)
   }
 
   React.useEffect(() => {
@@ -136,14 +137,14 @@ export default function home(props) {
       let tv = tmpExport.map(i => {
         return parseFloat(i.Quantity);
       })
-      
+
 
       let tmpInt = parseFloat("0");
       let tmpFloat = parseFloat("0");
       for (let k = 0; k < ta.length; k += 1) {
         tmpInt = tmpInt + ta[k];
       }
-      
+
       for (let k = 0; k < tv.length; k += 1) {
         tmpFloat = tmpFloat + tv[k];
       }
@@ -151,7 +152,7 @@ export default function home(props) {
       console.log(ta.length, tmpInt)
       setTotalAmount(tmpInt);
       setTotalValue(tmpFloat)
-      
+
       let bbb = [];
       if (resp.cnt > 50 && resp.cnt < 100)
         bbb = [1, 2]
@@ -170,11 +171,17 @@ export default function home(props) {
   };
 
   const handlePageClick = (data) => {
-   
-      changePage(data.selected + 1);
-   
+
+    changePage(data.selected + 1);
+
 
   };
+
+  const numberWithCommas = (x) => {
+    var parts = x.toString().split(".");
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    return parts.join(".");
+  }
 
 
   const changePage = async (number) => {
@@ -297,8 +304,8 @@ export default function home(props) {
             </Col>
             <Col xs={12} md={12} style={{ marginTop: "26px", float: "right" }} >
               <p style={{ float: "right" }}>
-                Нийт хэмжээ : <b> {totalValue ? totalValue.toFixed(2) : 0}л </b> {' '}
-                Нийт мөнгөн дүн : <b> {totalAmount ? totalAmount.toFixed(2) : 0}₮ {' '} </b>
+                Нийт хэмжээ : <b> {totalValue ? numberWithCommas(totalValue.toFixed(2)) : 0}л </b> {' '}
+                Нийт мөнгөн дүн : <b> {totalAmount ? numberWithCommas(totalAmount.toFixed(2)) : 0}₮ {' '} </b>
               </p>
             </Col>
             <Col xs={12} style={{ marginTop: "26px" }}>
